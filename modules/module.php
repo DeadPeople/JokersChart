@@ -18,7 +18,10 @@ class Module {
 		$this->readPara($view);
 			
 		// print block view
-		echo '<div class="view_block" style="background:'.getVal($view, "background", "black").';">';
+		echo '<div class="view_block" style="
+			background:'.getVal($view, "background", "black").';
+			width:'.$this->width.'px;
+		">';
 		
 		// print title
 		$this->displayTitle($view->{"title"});

@@ -183,6 +183,28 @@ $content =
 						"title": "校学生会"
 					}
 				]
+			},
+			
+			{
+				"style": "line_list",
+				"title": "08届软院就业率",
+				"color": "#FFFFFF",
+				"background": "#08202C",
+				"describe": "软院有着其他院系没有的优势，那就是专业的针对性。因而童鞋们在找实习和找工作都十分方便。而且招聘季，各大IT公司也会来校园进行校园招聘。所以除去出国与读研的童鞋，基本都能找到工作。",
+				
+				"height": "100",
+				"title-color": "#CDC96E",
+				"line-color": "#CDC96E",
+				"border-weight": "5",
+				"title-position": "left",
+				
+				"objects": 
+				[
+					{
+						"title": "84%",
+						"title-color": "#D2D282"
+					}
+				]
 			}
 		]
 	}';

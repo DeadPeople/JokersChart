@@ -14,6 +14,8 @@ class Line_List extends Module {
 	
 	const OBJ_TITLE = "title";
 	
+	protected function displayDescribe() {}
+	
 	protected function readPara($view) {
 		$this->height = getVal($view,"height",200);
 		$this->title_color = getVal($view,"title-color","white");
@@ -68,34 +70,54 @@ class Line_List extends Module {
 	}
 	
 	protected function displayContent($objects) {
-		// render
-		$obj_id = 0;
-		
 		// gen objects
 		echo '<div class="line_list_'.$this->id.' clearfix_after">';
 		echo '
 			<table>
-				<tr>
-					<td width="100%" class="describe">';
-		echo '<p class="describe" style="color:'.$this->_describeColor.'">'.$this->_describeContent.'</p>';
+				<tr>';
+		
+		switch (strtoupper($this->title_position)) {
+			case "RIGHT":
+				echo $this->getDescribe();
+				echo $this->getContent($objects);
+			break;
+			case "LEFT":
+			default:
+				echo $this->getContent($objects);
+				echo $this->getDescribe();
+			break;
+		}
+		
 		echo '
-					</td>
-					<td class="content">';
-		echo '<div>';
+				</tr>
+			</table>';
+		echo '</div>';
+	}
+	
+	protected function getContent($objects) {
+		$ret = '<td class="content">';
+		$ret = $ret.'<div>';
+		$obj_id = 0;
 		foreach($objects as $object){ // loop each people range
 			$obj_id++; // mark obj as obj_id
 			
-			echo '
+			$ret = $ret.'
 			<div class="obj obj_'.$obj_id.'">
 				<p>'.$this->objs[$obj_id][self::OBJ_TITLE].'</p>
 			</div>';
 		}
-		echo '</div>';
-		echo '
-					</td>
-				</tr>
-			</table>';
-		echo '</div>';
+		$ret = $ret.'</div>';
+		$ret = $ret.'</td>';
+		
+		return $ret;
+	}
+	
+	protected function getDescribe() {
+		$ret = '<td width="100%" class="describe">';
+		$ret = $ret.'<p class="describe" style="color:'.$this->_describeColor.'">'.$this->_describeContent.'</p>';
+		$ret = $ret.'</td>';
+		
+		return $ret;
 	}
 	
 	public $inner_css = '
