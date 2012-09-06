@@ -205,6 +205,46 @@ $content =
 						"title-color": "#D2D282"
 					}
 				]
+			},
+			
+			{
+				"style": "circle",
+				"title": "08软院的校园生活比",
+				"color": "#FFFFFF",
+				"background": "#08202C",
+				"describe": "你以为在学校只有学习么？那你就大错特错啦。当然了，如果要当学霸那我也没什么办法。就一般童鞋的校园生活而言，学习和娱乐会占用大头。而社团（包括学生会等等），则是部分人参加~",
+				
+				"title-color": "white",
+				"value-color": "#08202C",
+				"radius": 300,
+				"usage": 40,
+				
+				"objects": 
+				[
+					{
+						"title": "学习",
+						"value": "90",
+						"background-color": "#E58384",
+						"title-color": "#F5F5F5",
+						"value-color": "#082020",
+						"describe": "nothing!"
+					},
+					{
+						"title": "社团",
+						"value": "89",
+						"background-color": "#FBB03B"
+					},
+					{
+						"title": "娱乐",
+						"value": "82",
+						"background-color": "#CACB6D"
+					},
+					{
+						"title": "其他",
+						"value": "46",
+						"background-color": "#818591"
+					}
+				]
 			}
 		]
 	}';
