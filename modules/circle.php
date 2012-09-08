@@ -11,14 +11,16 @@ class Circle extends Module {
 	private $value_color = "#FFF";
 	private $background_color = "#FFF";
 	private $usage = "50";
+	private $avg_width = 0;
+	private $title_size = 20;
 	
 	public $objs = array();
 	const OBJ_DES = "des";
 	const OBJ_PATH = "path";
 	const OBJ_TITLE = "title";
 	const OBJ_PERCENT = "percent";
-	const OBJ_POSITION_VALUE_X = "position_value_x";
-	const OBJ_POSITION_VALUE_Y = "position_value_y";
+	const OBJ_POSITION_CIRCLE_X = "position_circle_x";
+	const OBJ_POSITION_CIRCLE_Y = "position_circle_y";
 	const OBJ_POSITION_TITLE_X = "position_title_x";
 	const OBJ_POSITION_TITLE_Y = "position_title_y";
 	
@@ -28,6 +30,7 @@ class Circle extends Module {
 		$this->value_color = getVal($view,"value-color","white");
 		$this->background_color = getVal($view,"background-color","gray");
 		$this->usage = getVal($view,"usage","50");
+		$this->title_size = getVal($view,"title-size","20");
 		parent::readPara($view);
 	}
 	
@@ -44,7 +47,6 @@ class Circle extends Module {
 		
 		$tmp = str_replace("[HEIGHT]",$my_des,$tmp);
 		$tmp = str_replace("[WIDTH]",$my_des,$tmp);
-		$tmp = str_replace("[TITLE_SIZE]",$this->radius * 0.25,$tmp);
 		$this->outter_css = $tmp;
 		
 		$number = 0;
@@ -59,8 +61,10 @@ class Circle extends Module {
 		$basePointY     = $my_des/2;
 		$angleSum1      = 90;
 		$angleSum2      = 0;
+		
+		$top			= 0;
 		//-------
-		$avg_width = ($this->usage/100) * $this->radius / $number;
+		$this->avg_width = ($this->usage/100) * $this->radius / $number;
 		
 		foreach($objects as $object){ // loop each people range
 			$obj_id++; // mark obj as obj_id
@@ -68,12 +72,13 @@ class Circle extends Module {
 			$tmp = $this->inner_css2;
 			
 			$b_value = getVal($object, "value", 0);
-			$b_percent = $b_value; // <---------------------------------------------percent!
+			$b_percent = floor($b_value)/10;
 			$b_title = getVal($object, "title", "");
 			$b_title_color = getVal($object, "title-color", $this->title_color);
 			$b_value_color = getVal($object, "value-color", $this->value_color);
 			$b_describe = getVal($object, "describe", "");
 			$b_background_color = getVal($object, "background-color", $this->background_color);
+			$b_title_size = getVal($object, "title-size", $this->title_size);
 			
 			if($b_percent == floor($b_percent)) $b_percent = $b_percent.".0";
 			
@@ -83,12 +88,9 @@ class Circle extends Module {
 			$tmp = str_replace("[OBJ_TITLE_COLOR]",$b_title_color,$tmp);
 			$tmp = str_replace("[OBJ_VALUE_COLOR]",$b_value_color,$tmp);
 			$tmp = str_replace("[OBJ_BACK_COLOR]",$b_background_color,$tmp);
+			$tmp = str_replace("[OBJ_TITLE_SIZE]",$b_title_size,$tmp);
 			
 			// draw pie
-		    $currentX       = 0;
-		    $currentY       = 0;
-		    $currentX2      = 0;
-		    $currentY2      = 0;
 		    $offsetX1       = 0; // new postion range
 		    $offsetY1       = 0;
 		    $offsetX2       = 0;
@@ -97,16 +99,16 @@ class Circle extends Module {
 		    $offsetY3       = 0;
 		    $offsetX4       = 0;
 		    $offsetY4       = 0;
-		    $offsetXt       = 0; // txt position - title
-		    $offsetYt       = 0;
-		    $offsetXv       = 0; // txt position - value
-		    $offsetYv       = 0;
-		    $offsetXb       = 0; // txt position - block
-		    $offsetYb       = 0;
-		    $radius         = $this->radius - ($obj_id-1)*$avg_width;//$this->radius;
-		    $radius2        = $this->radius - ($obj_id-0.1)*$avg_width;//$this->radius*0.9;
-			$angle          = 360 * $b_percent / 100;
+		    $offsetXt		= 0; // title position
+		    $offsetYt		= 0;
+		    $offsetXo		= 0; // circle position
+		    $offsetYo		= 0;
+		    $radius         = $this->radius - ($obj_id-1)*$this->avg_width;
+		    $radius2        = $this->radius - ($obj_id-0.2)*$this->avg_width;
+		    $radiusHalf     = ($radius + $radius2) / 2;
+			$angle          = 360 * $b_value / 100;
 			
+			// painter
 			$angleSum2 = $angleSum1 + $angle;
 			$offsetX1 = $radius * cos($angleSum1*pi()/180);
 			$offsetY1 = $radius * sin($angleSum1*pi()/180);
@@ -117,22 +119,6 @@ class Circle extends Module {
 			$offsetX4 = $radius2 * cos($angleSum2*pi()/180);
 			$offsetY4 = $radius2 * sin($angleSum2*pi()/180);
 			
-			$v_percet = 0.5 + (5 - $b_percent) / 30;
-			$offsetXv =  $radius*$v_percet * cos(($angleSum1+$angleSum2)/2*pi()/180) + $basePointX;
-			$offsetYv = -$radius*$v_percet * sin(($angleSum1+$angleSum2)/2*pi()/180) + $basePointY;
-			
-			$t_percet = 1.25;
-			$offsetXt =  $radius*$t_percet * cos(($angleSum1+$angleSum2)/2*pi()/180) + $basePointX;
-			$offsetYt = -$radius*$t_percet * sin(($angleSum1+$angleSum2)/2*pi()/180) + $basePointY;
-			
-			$currentX = $basePointX+$offsetX2;
-			$currentY = $basePointY-$offsetY2;
-			
-			$currentX2 = $basePointX+$offsetX4;
-			$currentY2 = $basePointY-$offsetY4 + 3;
-			$currentX3 = $basePointX+$offsetX3;
-			$currentY3 = $basePointY-$offsetY3 + 3;
-			
 			$OX11 = $basePointX+$offsetX1;
 			$OY11 = $basePointY-$offsetY1;
 			$OX12 = $basePointX+$offsetX2;
@@ -141,6 +127,26 @@ class Circle extends Module {
 			$OY21 = $offsetY2-$offsetY4;
 			$OX22 = $basePointX+$offsetX3;
 			$OY22 = $basePointY-$offsetY3;
+			
+			// title
+			$top += $b_title_size + 5;
+			$hei = $this->radius - $top;
+			
+			$offsetXt = sqrt(pow($this->radius,2) - pow($hei,2));
+			$offsetYt = $hei;
+			$_offsetXt = floor($basePointX + $offsetXt + $b_title_size);
+			$_offsetYt = floor($basePointY + $hei);
+			$offsetXt = $basePointX - $offsetXt - $b_title_size;
+			$offsetYt = $basePointY - $offsetYt;
+			
+			// circle
+			$angleSum2 = asin($hei / $this->radius);
+			$offsetXo = $radiusHalf * cos($angleSum2);
+			$offsetYo = $radiusHalf * sin($angleSum2);
+			$offsetXo = $basePointX - $offsetXo;
+			$offsetYo = $basePointY - $offsetYo;
+			
+			
 			
 			$offsetY1 *= -1;
 			
@@ -165,10 +171,13 @@ class Circle extends Module {
 			$this->objs[$obj_id][self::OBJ_DES] = $my_des;
 			$this->objs[$obj_id][self::OBJ_PATH] = $pointPath;
 			$this->objs[$obj_id][self::OBJ_PERCENT] = $b_percent;
-			$this->objs[$obj_id][self::OBJ_POSITION_VALUE_X] = $offsetXv;
-			$this->objs[$obj_id][self::OBJ_POSITION_VALUE_Y] = $offsetYv;
+			$this->objs[$obj_id][self::OBJ_POSITION_CIRCLE_X] = $offsetXo;
+			$this->objs[$obj_id][self::OBJ_POSITION_CIRCLE_Y] = $offsetYo;
 			$this->objs[$obj_id][self::OBJ_POSITION_TITLE_X] = $offsetXt;
 			$this->objs[$obj_id][self::OBJ_POSITION_TITLE_Y] = $offsetYt;
+			
+			$tmp = str_replace("[OBJ_TITLE_X]",$_offsetXt,$tmp);
+			$tmp = str_replace("[OBJ_TITLE_Y]",$_offsetYt,$tmp);
 			
 			$this->outter_css = $this->outter_css.' '.$tmp;
 		}
@@ -186,20 +195,25 @@ class Circle extends Module {
 			
 			echo '
 			<div class="obj obj_'.$obj_id.'">
+				<div class="ctnr">
 				<svg width="'.$this->objs[$obj_id][self::OBJ_DES].'" 
 				height="'.$this->objs[$obj_id][self::OBJ_DES].'" version="1.1"
 				xmlns="http://www.w3.org/2000/svg"
 				>
 					<path d="'.$this->objs[$obj_id][self::OBJ_PATH].'" />
-					<text 	x="'.$this->objs[$obj_id][self::OBJ_POSITION_VALUE_X].'" 
-							y="'.$this->objs[$obj_id][self::OBJ_POSITION_VALUE_Y].'">
-							'.$this->objs[$obj_id][self::OBJ_PERCENT].'
-					</text>
-					<text 	x="'.$this->objs[$obj_id][self::OBJ_POSITION_TITLE_X].'" 
-							y="'.$this->objs[$obj_id][self::OBJ_POSITION_TITLE_Y].'">
-						'.$this->objs[$obj_id][self::OBJ_TITLE].'
-					</text>
+					<circle cx="'.$this->objs[$obj_id][self::OBJ_POSITION_CIRCLE_X].'" 
+							cy="'.$this->objs[$obj_id][self::OBJ_POSITION_CIRCLE_Y].'" 
+							r="'.($this->avg_width * 0.2).'" />
+					<line	x1="'.$this->objs[$obj_id][self::OBJ_POSITION_CIRCLE_X].'"
+							y1="'.$this->objs[$obj_id][self::OBJ_POSITION_CIRCLE_Y].'"
+							x2="'.$this->objs[$obj_id][self::OBJ_POSITION_TITLE_X].'"
+							y2="'.$this->objs[$obj_id][self::OBJ_POSITION_TITLE_Y].'" />
 				</svg>
+				<p class="title">
+					<span>'.$this->objs[$obj_id][self::OBJ_PERCENT].'</span>
+					'.$this->objs[$obj_id][self::OBJ_TITLE].'
+				</p>
+				</div>
 			</div>';
 		}
 		echo '</div>';
@@ -218,13 +232,30 @@ class Circle extends Module {
 		position: absolute;
 	}
 	
-	.circle_[ID] .obj svg text {
-		font-size:[TITLE_SIZE]px;
+	.circle_[ID] .obj .ctnr {
+		position: relative;
+		height: [HEIGHT]px;
+		width: [WIDTH]px;
+	}
+	
+	.circle_[ID] .obj .ctnr svg {
+		position: absolute;
+	}
+	
+	.circle_[ID] .obj .ctnr svg text {
 		font-weight: bolder;
 		font-family: Microsoft YaHei, SimHei, Tahoma, Verdana, STHeiTi, simsun, sans-serif;
-		letter-spacing: -3px;
-		text-anchor:middle;
-		alignment-baseline:  middle ;
+		text-anchor: end;
+		alignment-baseline: auto;
+		
+		text-decoration:underline;
+		padding:100px;
+		border: 1px solid gray;
+	}
+	
+	.circle_[ID] .obj .ctnr p.title {
+		padding-right:5px;
+		border-bottom:1px solid white;
 	}
 	';
 	
@@ -234,16 +265,29 @@ class Circle extends Module {
 		top: [OBJ_Y]px;
 	}
 	
-	.circle_[ID] .obj_[OBJ_ID] svg path {
+	.circle_[ID] .obj_[OBJ_ID] .ctnr p.title {
+		color:[OBJ_TITLE_COLOR];
+		font-size: [OBJ_TITLE_SIZE]px;
+		position:absolute;
+		right:[OBJ_TITLE_X]px;
+		bottom:[OBJ_TITLE_Y]px;
+	}
+	
+	.circle_[ID] .obj_[OBJ_ID] .ctnr svg path {
 		fill:[OBJ_BACK_COLOR];
 	}
 	
-	.circle_[ID] .obj_[OBJ_ID] svg text {
-		fill:[OBJ_VALUE_COLOR];
+	.circle_[ID] .obj_[OBJ_ID] .ctnr svg circle {
+		fill:[OBJ_TITLE_COLOR];
 	}
 	
-	.circle_[ID] .obj_[OBJ_ID] svg text + text {
+	.circle_[ID] .obj_[OBJ_ID] .ctnr svg line {
+		stroke:[OBJ_TITLE_COLOR];
+	}
+	
+	.circle_[ID] .obj_[OBJ_ID] .ctnr svg text {
 		fill:[OBJ_TITLE_COLOR];
+		font-size: [OBJ_TITLE_SIZE]px;
 	}
 	';
 }

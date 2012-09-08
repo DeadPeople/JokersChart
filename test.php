@@ -216,8 +216,9 @@ $content =
 				
 				"title-color": "white",
 				"value-color": "#08202C",
+				"title-size": 15,
 				"radius": 300,
-				"usage": 40,
+				"usage": 25,
 				
 				"objects": 
 				[
@@ -227,11 +228,12 @@ $content =
 						"background-color": "#E58384",
 						"title-color": "#F5F5F5",
 						"value-color": "#082020",
+						"title-size": 20,
 						"describe": "nothing!"
 					},
 					{
 						"title": "…ÁÕ≈",
-						"value": "89",
+						"value": "89.00000123",
 						"background-color": "#FBB03B"
 					},
 					{
