@@ -209,42 +209,69 @@ $content =
 			
 			{
 				"style": "circle",
-				"title": "08软院的校园生活比",
+				"title": "实在是懒得凑文字了",
 				"color": "#FFFFFF",
 				"background": "#08202C",
-				"describe": "你以为在学校只有学习么？那你就大错特错啦。当然了，如果要当学霸那我也没什么办法。就一般童鞋的校园生活而言，学习和娱乐会占用大头。而社团（包括学生会等等），则是部分人参加~",
+				"describe": "其实吧，各位看着看着，一定会想。这个数据是正确的么？十分抱歉，完全是假的！只是为了凑字数来检查对应数据的模块是不是正确显示而已。现在，我真的是想不出什么东西可以凑了，所以下面就随便写了！",
 				
 				"title-color": "white",
 				"value-color": "#08202C",
 				"title-size": 15,
 				"radius": 300,
-				"usage": 25,
+				"usage": 50,
+				"des-title": "Hei, man! It\'s time to study!",
+				"des-title-color": "white",
+				"des-title-size": "50",
 				
 				"objects": 
 				[
 					{
-						"title": "学习",
-						"value": "90",
-						"background-color": "#E58384",
+						"title": "Items for you",
+						"value": "97",
+						"background-color": "#0092BB",
 						"title-color": "#F5F5F5",
-						"value-color": "#082020",
 						"title-size": 20,
 						"describe": "nothing!"
 					},
 					{
-						"title": "社团",
-						"value": "89.00000123",
-						"background-color": "#FBB03B"
+						"title": "Hello World!",
+						"value": "92.00000123",
+						"background-color": "#FBB03D"
 					},
 					{
-						"title": "娱乐",
-						"value": "82",
+						"title": "Just have fun",
+						"value": "87",
+						"background-color": "#92D9F9"
+					},
+					{
+						"title": "Bamboo",
+						"value": "58",
+						"background-color": "#818591"
+					},
+					{
+						"title": "Little Light",
+						"value": "53",
+						"background-color": "#AB6DB0"
+					},
+					{
+						"title": "To the one",
+						"value": "42",
+						"background-color": "#3DB44C"
+					},
+					{
+						"title": "Second haha",
+						"value": "31",
 						"background-color": "#CACB6D"
 					},
 					{
-						"title": "其他",
-						"value": "46",
-						"background-color": "#818591"
+						"title": "You\'re in",
+						"value": "29",
+						"background-color": "#FFFFFF"
+					},
+					{
+						"title": "Neva Out",
+						"value": "18",
+						"background-color": "#E58183"
 					}
 				]
 			}

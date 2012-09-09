@@ -8,14 +8,17 @@ class Circle extends Module {
 	
 	private $radius = 0;
 	private $title_color = "#FFF";
-	private $value_color = "#FFF";
 	private $background_color = "#FFF";
 	private $usage = "50";
 	private $avg_width = 0;
 	private $title_size = 20;
+	private $des_title = "";
+	private $des_title_color = "white";
+	private $des_title_size = 20;
+	private $des_h = 0;
+	private $des_w = 0;
 	
 	public $objs = array();
-	const OBJ_DES = "des";
 	const OBJ_PATH = "path";
 	const OBJ_TITLE = "title";
 	const OBJ_PERCENT = "percent";
@@ -27,10 +30,12 @@ class Circle extends Module {
 	protected function readPara($view) {
 		$this->radius = getVal($view,"radius",200);
 		$this->title_color = getVal($view,"title-color","white");
-		$this->value_color = getVal($view,"value-color","white");
 		$this->background_color = getVal($view,"background-color","gray");
 		$this->usage = getVal($view,"usage","50");
 		$this->title_size = getVal($view,"title-size","20");
+		$this->des_title = getVal($view,"des-title","");
+		$this->des_title_color = getVal($view,"des-title-color","white");
+		$this->des_title_size = getVal($view,"des-title-size","20");
 		parent::readPara($view);
 	}
 	
@@ -43,28 +48,31 @@ class Circle extends Module {
 		$tmp = $this->inner_css;
 		$tmp = str_replace("[ID]",$this->id,$tmp);
 		
-		$my_des = $this->radius * 3;
+		$this->des_h = $this->radius * 2.2;
+		$this->des_w = $this->radius * 3;
 		
-		$tmp = str_replace("[HEIGHT]",$my_des,$tmp);
-		$tmp = str_replace("[WIDTH]",$my_des,$tmp);
-		$this->outter_css = $tmp;
+		//------- init pie view
+		$basePointX     = $this->des_w/2;
+		$basePointY     = $this->des_h/2;
+		$angleSum1      = 90;
+		$angleSum2      = 0;
+		$top			= 0;
 		
-		$number = 0;
-		
+		$number 		= 0;
 		foreach($objects as $object){ // calculate the summary
 			$number++;
 		}
 		if($number == 0) $number = 1;
-		
-		//------- init pie view
-		$basePointX     = $my_des/2;
-		$basePointY     = $my_des/2;
-		$angleSum1      = 90;
-		$angleSum2      = 0;
-		
-		$top			= 0;
-		//-------
 		$this->avg_width = ($this->usage/100) * $this->radius / $number;
+		//-------
+		
+		$tmp = str_replace("[HEIGHT]",$this->des_h,$tmp);
+		$tmp = str_replace("[WIDTH]",$this->des_w,$tmp);
+		$tmp = str_replace("[DES_TITLE_COLOR]",$this->des_title_color,$tmp);
+		$tmp = str_replace("[DES_TITLE_SIZE]",$this->des_title_size,$tmp);
+		$tmp = str_replace("[DES_TITLE_X]",$basePointX,$tmp);
+		$tmp = str_replace("[DES_TITLE_Y]",$basePointY,$tmp);
+		$this->outter_css = $tmp;
 		
 		foreach($objects as $object){ // loop each people range
 			$obj_id++; // mark obj as obj_id
@@ -75,7 +83,6 @@ class Circle extends Module {
 			$b_percent = floor($b_value)/10;
 			$b_title = getVal($object, "title", "");
 			$b_title_color = getVal($object, "title-color", $this->title_color);
-			$b_value_color = getVal($object, "value-color", $this->value_color);
 			$b_describe = getVal($object, "describe", "");
 			$b_background_color = getVal($object, "background-color", $this->background_color);
 			$b_title_size = getVal($object, "title-size", $this->title_size);
@@ -86,9 +93,9 @@ class Circle extends Module {
 			$tmp = str_replace("[OBJ_ID]",$obj_id,$tmp);
 			
 			$tmp = str_replace("[OBJ_TITLE_COLOR]",$b_title_color,$tmp);
-			$tmp = str_replace("[OBJ_VALUE_COLOR]",$b_value_color,$tmp);
 			$tmp = str_replace("[OBJ_BACK_COLOR]",$b_background_color,$tmp);
 			$tmp = str_replace("[OBJ_TITLE_SIZE]",$b_title_size,$tmp);
+			$tmp = str_replace("[OBJ_VALUE_SIZE]",$b_title_size * 1.5,$tmp);
 			
 			// draw pie
 		    $offsetX1       = 0; // new postion range
@@ -129,7 +136,7 @@ class Circle extends Module {
 			$OY22 = $basePointY-$offsetY3;
 			
 			// title
-			$top += $b_title_size + 5;
+			$top += $b_title_size * 1.8;
 			$hei = $this->radius - $top;
 			
 			$offsetXt = sqrt(pow($this->radius,2) - pow($hei,2));
@@ -145,7 +152,6 @@ class Circle extends Module {
 			$offsetYo = $radiusHalf * sin($angleSum2);
 			$offsetXo = $basePointX - $offsetXo;
 			$offsetYo = $basePointY - $offsetYo;
-			
 			
 			
 			$offsetY1 *= -1;
@@ -168,7 +174,6 @@ class Circle extends Module {
 			$fillColor  = "fill:white";
 			
 			$this->objs[$obj_id][self::OBJ_TITLE] = $b_title;
-			$this->objs[$obj_id][self::OBJ_DES] = $my_des;
 			$this->objs[$obj_id][self::OBJ_PATH] = $pointPath;
 			$this->objs[$obj_id][self::OBJ_PERCENT] = $b_percent;
 			$this->objs[$obj_id][self::OBJ_POSITION_CIRCLE_X] = $offsetXo;
@@ -196,8 +201,8 @@ class Circle extends Module {
 			echo '
 			<div class="obj obj_'.$obj_id.'">
 				<div class="ctnr">
-				<svg width="'.$this->objs[$obj_id][self::OBJ_DES].'" 
-				height="'.$this->objs[$obj_id][self::OBJ_DES].'" version="1.1"
+				<svg width="'.$this->des_w.'" 
+				height="'.$this->des_h.'" version="1.1"
 				xmlns="http://www.w3.org/2000/svg"
 				>
 					<path d="'.$this->objs[$obj_id][self::OBJ_PATH].'" />
@@ -206,8 +211,8 @@ class Circle extends Module {
 							r="'.($this->avg_width * 0.2).'" />
 					<line	x1="'.$this->objs[$obj_id][self::OBJ_POSITION_CIRCLE_X].'"
 							y1="'.$this->objs[$obj_id][self::OBJ_POSITION_CIRCLE_Y].'"
-							x2="'.$this->objs[$obj_id][self::OBJ_POSITION_TITLE_X].'"
-							y2="'.$this->objs[$obj_id][self::OBJ_POSITION_TITLE_Y].'" />
+							x2="'.ceil($this->objs[$obj_id][self::OBJ_POSITION_TITLE_X]-1).'"
+							y2="'.ceil($this->objs[$obj_id][self::OBJ_POSITION_TITLE_Y]-1).'" />
 				</svg>
 				<p class="title">
 					<span>'.$this->objs[$obj_id][self::OBJ_PERCENT].'</span>
@@ -216,6 +221,8 @@ class Circle extends Module {
 				</div>
 			</div>';
 		}
+		echo '
+			<p class="obj key">'.$this->des_title.'</p>';
 		echo '</div>';
 	}
 	
@@ -242,20 +249,17 @@ class Circle extends Module {
 		position: absolute;
 	}
 	
-	.circle_[ID] .obj .ctnr svg text {
-		font-weight: bolder;
-		font-family: Microsoft YaHei, SimHei, Tahoma, Verdana, STHeiTi, simsun, sans-serif;
-		text-anchor: end;
-		alignment-baseline: auto;
-		
-		text-decoration:underline;
-		padding:100px;
-		border: 1px solid gray;
-	}
-	
 	.circle_[ID] .obj .ctnr p.title {
 		padding-right:5px;
-		border-bottom:1px solid white;
+		font-weight:bolder;
+	}
+	
+	.circle_[ID] p.key {
+		font-size:[DES_TITLE_SIZE]px;
+		color:[DES_TITLE_COLOR];
+		left: [DES_TITLE_X]px;
+		top:[DES_TITLE_Y]px;
+		text-shadow: 0 0 2px black;
 	}
 	';
 	
@@ -266,11 +270,20 @@ class Circle extends Module {
 	}
 	
 	.circle_[ID] .obj_[OBJ_ID] .ctnr p.title {
+		border-bottom:2px solid [OBJ_TITLE_COLOR];
+	}
+	
+	.circle_[ID] .obj_[OBJ_ID] .ctnr p.title {
 		color:[OBJ_TITLE_COLOR];
 		font-size: [OBJ_TITLE_SIZE]px;
 		position:absolute;
 		right:[OBJ_TITLE_X]px;
 		bottom:[OBJ_TITLE_Y]px;
+	}
+	
+	.circle_[ID] .obj_[OBJ_ID] .ctnr p.title span {
+		color:[OBJ_BACK_COLOR];
+		font-size:[OBJ_VALUE_SIZE]px;
 	}
 	
 	.circle_[ID] .obj_[OBJ_ID] .ctnr svg path {
@@ -283,11 +296,7 @@ class Circle extends Module {
 	
 	.circle_[ID] .obj_[OBJ_ID] .ctnr svg line {
 		stroke:[OBJ_TITLE_COLOR];
-	}
-	
-	.circle_[ID] .obj_[OBJ_ID] .ctnr svg text {
-		fill:[OBJ_TITLE_COLOR];
-		font-size: [OBJ_TITLE_SIZE]px;
+		stroke-width:2;
 	}
 	';
 }
