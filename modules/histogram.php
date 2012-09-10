@@ -6,7 +6,6 @@ class Histogram extends Module {
 	
 	private $id = 0;
 	
-	private $height = 0;
 	private $radius = "";
 	private $color = "#FFF";
 	
@@ -15,10 +14,11 @@ class Histogram extends Module {
 	const OBJ_DESCRIBE = "describe";
 	
 	protected function readPara($view) {
+		parent::readPara($view);
+		
 		$this->height = getVal($view,"height",200);
 		$this->radius = getVal($view,"radius","0");
 		$this->color = getVal($view,"color","white");
-		parent::readPara($view);
 	}
 	
 	private function getRadius() {

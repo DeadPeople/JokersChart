@@ -274,6 +274,60 @@ $content =
 						"background-color": "#E58183"
 					}
 				]
+			},
+			
+			{
+				"style": "cloud",
+				"title": "这个是标签云",
+				"color": "#FFFFFF",
+				"background": "#08202C",
+				"describe": "网上有很多标签云，所以借鉴了一下。啧啧，动态的效果就是好呐~",
+				
+				"random-color": true,
+				"title-color": "white",
+				"title-size": "20",
+				
+				"objects": 
+				[
+					{
+						"title": "nice guy",
+						"title-color": "red",
+						"title-size": "30"
+					},
+					{
+						"title": "not bad"
+					},
+					{
+						"title": "Sakura"
+					},
+					{
+						"title": "Bamboo"
+					},
+					{
+						"title": "Asgfsg"
+					},
+					{
+						"title": "Fwetf"
+					},
+					{
+						"title": "Wgdrgh"
+					},
+					{
+						"title": "Ykhd"
+					},
+					{
+						"title": "Vjrgerog"
+					},
+					{
+						"title": "VHegesg"
+					},
+					{
+						"title": "Cukfuoy"
+					},
+					{
+						"title": "nicemeeting"
+					}
+				]
 			}
 		]
 	}';

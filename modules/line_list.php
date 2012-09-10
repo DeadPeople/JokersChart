@@ -6,7 +6,6 @@ class Line_List extends Module {
 	
 	private $id = 0;
 	
-	private $height = 0;
 	private $title_color = "white";
 	private $line_color = "white";
 	private $border_weight = "4";
@@ -17,13 +16,13 @@ class Line_List extends Module {
 	protected function displayDescribe() {}
 	
 	protected function readPara($view) {
+		parent::readPara($view);
+		
 		$this->height = getVal($view,"height",200);
 		$this->title_color = getVal($view,"title-color","white");
 		$this->line_color = getVal($view,"line-color","white");
 		$this->border_weight = getVal($view,"border-weight","5");
 		$this->title_position = getVal($view,"title-position","left");
-		
-		parent::readPara($view);
 	}
 	
 	protected function encode($objects) {

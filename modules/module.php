@@ -2,12 +2,14 @@
 $module_list = array ();
 
 class Module {
+	public static $global_height = 0;
 	public static $global_width = 0;
 	
 	public $style = "module";
 	public $inner_css = "";
 	public $outter_css = "";
 	
+	public $height = -1;
 	public $width = -1;
 	public $_titleColor = "white";
 	public $_describeColor = "white";
@@ -66,6 +68,7 @@ class Module {
 	}
 	
 	protected function readPara($view) {
+		$this->height = getVal($view, "height", Module::$global_height);
 		$this->width = getVal($view, "width", Module::$global_width);
 		$this->_titleColor = getVal($view, "color", "white");
 		$this->_describeColor = getVal($view, "describe-color", "white");
