@@ -281,7 +281,7 @@ $content =
 				"title": "这个是标签云",
 				"color": "#FFFFFF",
 				"background": "#08202C",
-				"describe": "网上有很多标签云，所以借鉴了一下。啧啧，动态的效果就是好呐~",
+				"describe": "网上有很多标签云，这里也就是随便糊弄一下下~",
 				
 				"random-color": true,
 				"title-color": "white",
@@ -327,6 +327,32 @@ $content =
 					{
 						"title": "nicemeeting"
 					}
+				]
+			},
+			
+			{
+				"style": "d3cloud",
+				"title": "这个是D3WorldCloud",
+				"color": "#FFFFFF",
+				"background": "#08202C",
+				"describe": "使用D3引擎的D3WorldCloud项目，详情请点击<a style=\'padding:10px;color:gray;\' href=\'http://www.jasondavies.com/wordcloud/#http%3A%2F%2Fsearch.twitter.com%2Fsearch.json%3Frpp%3D100%26q%3D%7Bword%7D=cloud\'>这里</a>",
+				
+				"height": 400,
+				
+				"objects": 
+				[
+					{"title": "nice guy"},
+					{"title": "not bad"},
+					{"title": "Sakura"},
+					{"title": "Bamboo"},
+					{"title": "Asgfsg"},
+					{"title": "Fwetf"},
+					{"title": "Wgdrgh"},
+					{"title": "Ykhd"},
+					{"title": "Vjrgerog"},
+					{"title": "VHegesg"},
+					{"title": "Cukfuoy"},
+					{"title": "nicemeeting"}
 				]
 			}
 		]

@@ -79,9 +79,11 @@ class Cloud extends Module {
 			$angle += 40;
 			$des = sin($obj_id*199)*0.35;
 			
+			$rnd_color = $this->randomColor();
+			
 			$b_title = getVal($object, "title", "");
 			$b_title_size = getVal($object, "title-size", $this->title_size);
-			$b_colors = $this->randomColor();
+			$b_color = getVal($object, "title-color", $rnd_color[0]);
 			$b_x_sin = 0.5 + sin($angle/360*pi()) * $des;
 			$b_y_sin = 0.5 + cos($angle/360*pi()) * $des;
 			$b_x = $this->width  * $b_x_sin;
@@ -91,7 +93,7 @@ class Cloud extends Module {
 			
 			$tmp = str_replace("[ID]",$this->id,$tmp);
 			$tmp = str_replace("[OBJ_ID]",$obj_id,$tmp);
-			$tmp = str_replace("[TITLE_COLOR]",$b_colors[0],$tmp);
+			$tmp = str_replace("[TITLE_COLOR]",$b_color,$tmp);
 			$tmp = str_replace("[TITLE_SIZE]",$b_title_size,$tmp);
 			$tmp = str_replace("[TITLE_X]",$b_x,$tmp);
 			$tmp = str_replace("[TITLE_Y]",$b_y,$tmp);

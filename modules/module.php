@@ -25,6 +25,8 @@ class Module {
 			width:'.$this->width.'px;
 		">';
 		
+		// print user content
+		echo $this->getCostmoizedContent();
 		// print title
 		$this->displayTitle($view->{"title"});
 		// encode content view
@@ -33,6 +35,8 @@ class Module {
 		$this->displayContent($view->{'objects'});
 		// print css
 		$this->displayCSS();
+		// print js
+		$this->displayJS();
 		// print describe
 		$this->displayDescribe();
 		
@@ -57,6 +61,22 @@ class Module {
 				'.$this->outter_css.'
 			</style>
 		';
+	}
+	
+	protected function displayJS() {
+		echo '
+			<script>
+				'.$this->getJS().'
+			</script>
+		';
+	}
+	
+	protected function getJS() {
+		
+	}
+	
+	protected function getCostmoizedContent() {
+		
 	}
 	
 	protected function displayDescribe() {
@@ -93,7 +113,7 @@ foreach ( $modules as $m ) {
 function getModule($style) {
 	global $module_list;
 	foreach ( $module_list as $m ) {
-		if($style == $m->style) {
+		if(strtoupper($style) == strtoupper($m->style)) {
 			return $m;
 		}
 	}
