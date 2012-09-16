@@ -6,6 +6,8 @@ class D3Cloud extends Module {
 	
 	private $id = 0;
 	
+	private $words = "";
+	
 	protected function readPara($view) {
 		parent::readPara($view);
 		
@@ -21,13 +23,8 @@ class D3Cloud extends Module {
 		var fill = d3.scale.category20b();
 		
 		var layout = d3.layout.cloud().size(['.$this->width.', '.$this->height.'])
-		  .words([
-			"Hello", "world", "normally", "you", "want", "more", "words",
-			"than", "this", "world", "normally", "you", "want", "more", "words",
-			"than", "this", "world", "normally", "you", "want", "more", "words",
-			"than", "this", "world", "normally", "you", "want", "more", "words",
-			"than", "this", "world", "normally", "you", "want", "more", "words",
-			"than", "this"].map(function(d) {
+		  .words(['.$this->words.']
+		  .map(function(d) {
 			return {text: d, size: 10 + Math.random() * 90};
 		  }))
 		  .rotate(function() { return ~~(Math.random() * 5) * 30 - 60; })
@@ -67,6 +64,15 @@ class D3Cloud extends Module {
 		$tmp = $this->inner_css;
 		$tmp = str_replace("[ID]",$this->id,$tmp);
 		$this->outter_css = $tmp;
+		
+		// genJS
+		$this->words = "";
+		$first = true;
+		foreach($objects as $object){ // loop each people range
+			$b_title = getVal($object, "title", "");
+			$this->words = $this->words.($first?'':',').'"'.$b_title.'"';
+			$first = false;
+		}
 	}
 	
 	protected function displayContent($objects) {
